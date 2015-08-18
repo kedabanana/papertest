@@ -16,24 +16,57 @@ function getBorder(view) {
 	}
 
 console.log("Create boundary");
+color = "green"
 corner = new Size(60, 60);
 border = new Path.Rectangle(getBorder(view), corner);
 
 
-border.strokeColor="red";
+border.strokeColor=color;
 
 
-var myCircle = new Path.Circle(new Point(100, 100), 50);
-myCircle.fillColor = 'black';
+var c = {
+	center : [50, 50],
+	radius : 40,
+	fillColor: "red"
+}
+
+
+var xloc = 20;
+var yloc = 20;
+var size = 20;
+var circle = new Path.Circle(new Point(xloc, yloc), size);
+circle.fillColor = "red";
 
 function onResize(event) {
-	myCircle.position = view.center;
 	border.remove();
 	b = view.bounds
-	console.log(b.width);
-	console.log(b.height);
 	border = new Path.Rectangle(getBorder(view), corner);
-	border.strokeColor="blue";
-	console.log("resizing");
+	border.strokeColor=color;
 	
 }
+
+
+var World = new function() {
+	var group = new Group();
+	var xmax = 1000;
+	var ymax = 1000;
+	var depositmax = 20
+
+	var deposits = [];
+	for (var i = 0; i < 333; i++) {
+		var size = Math.floor(Math.random() * depositmax);
+		var xloc = Math.floor(Math.random() * xmax);
+		var yloc = Math.floor(Math.random() * ymax);
+		console.log(xloc);
+		console.log(yloc);
+		deposits[i] = new Path.Circle(new Point(xloc, yloc), size);
+		deposits[i].fillColor = "red";
+	}
+	return 
+
+
+
+
+}
+
+

@@ -36,3 +36,6 @@ var Object = new function() {
    
 
 Start with world resizing... have it 5px less than all sides with a line around.
+DONE
+
+Add world class
