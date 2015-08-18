@@ -1,0 +1,26 @@
+KISS.
+
+HOARDER:
+
+Connect to pipes to piles of $STUFF
+pipes bring it back to hoard.
+different types of $STUFF, displayed as colour
+The different colours interact in various ways, e.g.
+	X cuts Y
+        Z siphons from W
+        etc etc... in a loop of interacts/with some balance.
+mutliple players
+
+
+----------
+
+implement in javascript canvs, paper.js.
+handle website with django
+
+
+========
+
+ITERATION 1:
+
+Research frameworks for HTML5/canvas
+download some examples, play around with canvas
