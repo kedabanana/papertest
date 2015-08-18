@@ -1,0 +1,38 @@
+Displaying a World.
+
+Create a World object. Can be resized within the window to show more "world".
+in the world there are Deposits. They have  type and associated colour/shape, but ignore that for now.
+Randomly place deposits in the world.
+display deposits are circles for now.
+
+Classes:
+
+World:
+
+#world size
+Xsize
+Ysize
+
+#current viewport size, from bottom left?
+windowx
+windowy
+windowsize
+
+
+Deposit:
+
+size
+color
+# current deposit location, from bottom left?
+xloc
+yloc
+
+
+
+java script objects seem to defined as:
+
+var Object = new function() {
+   }
+   
+
+Start with world resizing... have it 5px less than all sides with a line around.
