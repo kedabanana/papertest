@@ -11,22 +11,6 @@ function getRandomColor() {
 	return '#'+Math.floor(Math.random()*16777215).toString(16);
 }
 
-function getBorder(view) {
-	var boundgap = 5;
-	var newwidth = view.bounds.width - (boundgap * 2);
-	var newheight = view.bounds.height - (boundgap *2);
-	var border = new Rectangle(boundgap, boundgap, newwidth, newheight);
-	return border
-	}
-
-console.log("Create boundary");
-color = "green"
-corner = new Size(60, 60);
-border = new Path.Rectangle(getBorder(view), corner);
-
-
-border.strokeColor=color;
-
 
 var c = {
 	center : [50, 50],
@@ -41,25 +25,31 @@ var size = 20;
 var circle = new Path.Circle(new Point(xloc, yloc), size);
 circle.fillColor = "red";
 
-function onResize(event) {
-	border.remove();
-	b = view.bounds
-	border = new Path.Rectangle(getBorder(view), corner);
-	border.strokeColor=color;
-	
-}
-
-var rect = new Rectangle(0, 0, 1000, 1000);
-
-
 function World(id, xmax, ymax) {
 	this.id = id;
 	this.XMAX = 1000;
 	this.YMAX = 1000;
 	this.DEPOSITMAX = 100
 	this.deposits = [];
+	this.border;
 
 
+}
+World.prototype.drawBorder = function() {
+	corner = new Size(20,20);
+	this.border = new Path.Rectangle(new Rectangle(0, 0, this.XMAX, this.YMAX), corner);
+	this.border.strokeColor = "red";
+}
+
+World.prototype.drawScreenBorder = function() {
+	var boundgap = 5
+	var xstart = view.bounds.x + boundgap;
+	var ystart = view.bounds.y + boundgap;
+	var newwidth = view.bounds.width - (boundgap * 2);
+	var newheight = view.bounds.height - (boundgap * 2);
+	var corner = new Size(20, 20);
+	this.border = new Path.Rectangle(new Rectangle(xstart, ystart, newwidth, newheight), corner);
+	this.border.strokeColor = "red";
 }
 
 
@@ -92,12 +82,32 @@ function validScroll(delta) {
 	}
 		
 
-function onMouseDrag(event) {
-	var delta = new Point(event.delta);
-	if (true == validScroll(delta)) {
-		view.scrollBy(delta);
-		}
-	}
-	
+
 p = new World();
 p.spreadDeposits(100);
+p.drawBorder();
+
+function validScroll(delta) {
+	var newcenter = view.bounds.center + delta;
+	if (p.border.contains(newcenter)) {
+		return true;
+	}
+	return false;
+}
+	
+function onMouseDrag(event) {
+	var delta = new Point(event.delta);
+	if (validScroll(delta)) {
+		view.scrollBy(delta);
+		p.border.remove();
+		p.drawBorder();
+	}
+}
+	
+function onResize(event) {
+	p.border.remove();
+	p.drawBorder();
+	
+}
+
+
