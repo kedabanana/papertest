@@ -6,6 +6,10 @@ var start =  new Point(100, 100);
 path.moveTo(start);
 path.lineTo(start + [100, -50]);
 
+/* Found online :) */
+function getRandomColor() {
+	return '#'+Math.floor(Math.random()*16777215).toString(16);
+}
 
 function getBorder(view) {
 	var boundgap = 5;
@@ -47,28 +51,39 @@ function onResize(event) {
 
 var rect = new Rectangle(0, 0, 1000, 1000);
 
-var World = new function() {
-	var group = new Group();
-	var xmax = 1000;
-	var ymax = 1000;
-	var depositmax = 20
-	var rect = new Rectangle(0, 0, xmax, ymax);
 
-	var deposits = [];
-	for (var i = 0; i < 333; i++) {
-		console.log(this.XMAX);
-		var size = Math.floor(Math.random() * depositmax);
-		var xloc = Math.floor(Math.random() * this.XMAX);
-		var yloc = Math.floor(Math.random() * this.YMAX);
-		deposits[i] = new Path.Circle(new Point(xloc, yloc), size);
-		deposits[i].fillColor = "red";
-	}
-	return {
-		XMAX: 1000,
-		YMAX: 1000,
-	}
+function World(id, xmax, ymax) {
+	this.id = id;
+	this.XMAX = 1000;
+	this.YMAX = 1000;
+	this.DEPOSITMAX = 100
+	this.deposits = [];
+
 
 }
+
+
+/* Create quanitity of deposits, random size/color */
+World.prototype.spreadDeposits = function(quantity) {
+	for (var i = 0; i < quantity; i++) {
+		var size = Math.floor(Math.random() * this.DEPOSITMAX);
+		var xloc = Math.floor(Math.random() * this.XMAX);
+		var yloc = Math.floor(Math.random() * this.YMAX);
+		this.deposits.push(new Deposit(new Point(xloc, yloc), size, getRandomColor()));
+	}
+}
+
+
+
+/* A deposit of Goo */
+function Deposit(loc, size, color) {
+	this.loc = loc;
+	this.size = size;
+	this.color = color;
+	this.group = new Group(new Path.Circle(this.loc, this.size));
+	this.group.fillColor = this.color;
+}
+
 
 
 function validScroll(delta) {
@@ -84,4 +99,5 @@ function onMouseDrag(event) {
 		}
 	}
 	
-console.log(World.XMAX);
+p = new World();
+p.spreadDeposits(100);
