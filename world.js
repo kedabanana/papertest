@@ -27,8 +27,8 @@ circle.fillColor = "red";
 
 function World(id, xmax, ymax) {
 	this.id = id;
-	this.XMAX = 1000;
-	this.YMAX = 1000;
+	this.XMAX = 500;
+	this.YMAX = 500;
 	this.DEPOSITMAX = 100
 	this.deposits = [];
 	this.border;
@@ -52,14 +52,21 @@ World.prototype.drawScreenBorder = function() {
 	this.border.strokeColor = "red";
 }
 
+World.prototype.fitsInWorld = function(path) {
+	return this.border.bounds.contains(path);
+}
 
 /* Create quanitity of deposits, random size/color */
 World.prototype.spreadDeposits = function(quantity) {
 	for (var i = 0; i < quantity; i++) {
 		var size = Math.floor(Math.random() * this.DEPOSITMAX);
-		var xloc = Math.floor(Math.random() * this.XMAX);
-		var yloc = Math.floor(Math.random() * this.YMAX);
-		this.deposits.push(new Deposit(new Point(xloc, yloc), size, getRandomColor()));
+		var loc = new Point(this.XMAX, this.YMAX) * Point.random();
+		var rect = new Rectangle(loc.x - size, loc.y - size, size * 2, size * 2);
+		if (this.fitsInWorld(rect)) {
+			var p = new Path.Rectangle(rect);
+			p.strokeColor = "blue";
+			this.deposits.push(new Deposit(loc, size, getRandomColor()));
+		}
 	}
 }
 
@@ -77,15 +84,15 @@ function Deposit(loc, size, color) {
 
 
 function validScroll(delta) {
-	console.log(view.bounds)
-	return rect.contains(view.bounds) 
+	console.log(view.bounds);
+	return rect.contains(view.bounds);
 	}
 		
 
 
 p = new World();
-p.spreadDeposits(100);
 p.drawBorder();
+p.spreadDeposits(100);
 
 function validScroll(delta) {
 	var newcenter = view.bounds.center + delta;
@@ -105,9 +112,9 @@ function onMouseDrag(event) {
 }
 	
 function onResize(event) {
-	p.border.remove();
+	if ( p.border !== undefined ) {
+		p.border.remove();
+	}
 	p.drawBorder();
 	
 }
-
-
